@@ -1,3 +1,6 @@
 [submodule "modules/stripe"]
 	path = modules/stripe
 	url = https://github.com/mdyd-dev/platformos-payments-stripe
+[submodule "modules/payments"]
+	path = modules/payments
+	url = https://github.com/mdyd-dev/platformos-payments
