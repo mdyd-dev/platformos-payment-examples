@@ -11,9 +11,9 @@
     {% for payment in g.payments.results  %}
       <tr>
         <td>{{ payment.id }}</td>
-        <td>{{ payment.state }}</td>
-        <td>{{ payment.payer.name }}</td>
-        <td>{{ payment.total_amount_cents | pricify_cents }}</td>
+        <td>{% if payment.properties.paid_at != blank %}Paid{% elsif payment.properties.failed_at != blank %}Failed{% else %}Pending{% endif %}</td>
+        <td>{{ payment.user.name }}</td>
+        <td>{{ payment.properties.amount_cents | pricify_cents }}</td>
       </tr>
     {% endfor %}
   </table>

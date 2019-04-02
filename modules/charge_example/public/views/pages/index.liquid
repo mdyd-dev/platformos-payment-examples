@@ -6,6 +6,25 @@ metadata:
   description: Integrating Stripe payments
   docs_slug: tutorials/payments/integrating-stripe
 ---
-{% include_form 'modules/payments/simple_payment_form' %}
 
-{% include 'modules/payments/list' %}
+{%- parse_json 'data' -%}
+  {
+    "email": "{{ context.current_user.email }}",
+    "currency": "USD",
+    "description": "Charge Example",
+    "statement_descriptor": "Example 1.",
+    "capture": "true",
+    "amount": "500"
+  }
+{%- endparse_json -%}
+
+{%-
+  include_form 'modules/payments/gateway_request_form',
+  gateway: 'stripe'
+  request_type: 'create_payment'
+  redirect_to: '/payments'
+  button: "Pay Now"
+  data: data
+%}
+
+{% include 'modules/charge_example/list' %}
