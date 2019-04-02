@@ -1,0 +1,16 @@
+name: developer
+properties:
+- name: bio
+  type: string
+- name: years_of_experience
+  type: integer
+- name: hourly_rate
+  type: float
+- name: avatar
+  type: photo
+- name: banner
+  type: photo
+- name: cv
+  type: custom_attachment
+- name: mobile_number
+  type: string

@@ -1,0 +1,18 @@
+{
+  "name": "marketplace-example",
+  "version": "1.0.0",
+  "description": "Examples repository for features described at https://documentation.platform-os.com",
+  "scripts": {
+    "deploy": "marketplace-kit deploy -f",
+    "test": "docker run -v $PWD:/MP -e \"MP_URL=$MP_URL\" -it platformos/testcafe 'testcafe \"chromium:headless --no-sandbox\" /MP/tests/e2e/features \"/MP/modules/**/test/*.js\"'",
+    "test-ci": "testcafe 'chromium:headless --no-sandbox' --screenshots-on-fails tests/e2e/features/ \"modules/**/test/*.js\"",
+    "test-local": "npx testcafe \"chrome:headless\" tests/e2e \"modules/**/test/*.js\""
+  },
+  "repository": "https://github.com/mdyd-dev/marketplace-nearme-example.git",
+  "license": "ISC",
+  "homepage": "https://examples.platform-os.com",
+  "devDependencies": {
+    "@platform-os/testcafe-helpers": "^2.1.1",
+    "faker": "^4.1.0"
+  }
+}
