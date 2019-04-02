@@ -8,9 +8,9 @@
     "test-ci": "testcafe 'chromium:headless --no-sandbox' --screenshots-on-fails tests/e2e/features/ \"modules/**/test/*.js\"",
     "test-local": "npx testcafe \"chrome:headless\" tests/e2e \"modules/**/test/*.js\""
   },
-  "repository": "https://github.com/mdyd-dev/marketplace-nearme-example.git",
+  "repository": "https://github.com/mdyd-dev/platformos-payments-examples.git",
   "license": "ISC",
-  "homepage": "https://examples.platform-os.com",
+  "homepage": "https://payment-examples.staging.oregon.platform-os.com",
   "devDependencies": {
     "@platform-os/testcafe-helpers": "^2.1.1",
     "faker": "^4.1.0"

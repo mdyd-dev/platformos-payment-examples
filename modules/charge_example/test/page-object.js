@@ -3,7 +3,8 @@ import { Selector, t } from 'testcafe';
 export default class Stripe {
   constructor() {
     this.button = {
-      submit: Selector('button[type="submit"]')
+      submit: Selector('button.stripe-button-el'),
+      submitCharge: Selector('button[type="submit"]')
     };
     this.iframe = {
       iframeStripe: Selector('iframe[name="stripe_checkout_app"]'),

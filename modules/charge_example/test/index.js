@@ -6,7 +6,7 @@ import { checkLiquidErrors, getBtAlertElement } from '@platform-os/testcafe-help
 const stripe = new Stripe();
 
 const { email, password } = {
-  email: 'test_user@test.com',
+  email: 'test_stripe@test.com',
   password: 'password'
 };
 
@@ -20,20 +20,16 @@ fixture('Stripe')
     await t.navigateTo('/payments');
   });
 
-test('There are no liquid errors on the page', async t => {
-  await checkLiquidErrors({ t, Selector });
-});
-
 test('Pay by using valid credit card', async t => {
+  await checkLiquidErrors({ t, Selector });
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
-    .typeText(stripe.input.email, faker.internet.email())
     .typeText(stripe.input.cardNumber, VALID_CC)
     .typeText(stripe.input.date, '12/23')
     .typeText(stripe.input.ccv, '111')
     .typeText(stripe.input.zip, faker.address.zipCode())
-    .click(stripe.button.submit);
+    .click(stripe.button.submitCharge);
 
   /*
     Im pretty sure its not testing what its supposed to test, but i give up on trying to test 
@@ -46,15 +42,15 @@ test('Pay by using valid credit card', async t => {
 });
 
 test('Pay by using invalid card with declined code', async t => {
+  await checkLiquidErrors({ t, Selector });
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
-    .typeText(stripe.input.email, faker.internet.email())
     .typeText(stripe.input.cardNumber, INVALID_CC)
     .typeText(stripe.input.date, '12/23')
     .typeText(stripe.input.ccv, '111')
     .typeText(stripe.input.zip, faker.address.zipCode())
-    .click(stripe.button.submit);
+    .click(stripe.button.submitCharge);
 
   await t.expect(stripe.iframe.validation.textContent).contains('This card was declined.');
 });
