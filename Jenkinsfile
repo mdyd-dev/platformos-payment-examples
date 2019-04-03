@@ -1,7 +1,6 @@
 @Library('pipeline-utils')_  // it's not a typo
 
-def staging_url = "https://nearme-example.staging.oregon.platform-os.com"
-def production_url = "https://examples.platform-os.com"
+def staging_url = "https://payment-examples.staging.oregon.platform-os.com"
 
 pipeline {
   agent any
@@ -73,38 +72,21 @@ pipeline {
         sh 'npm run test-ci'
       }
     }
-
-    stage('Deploy production') {
-      agent { docker { image 'platformos/marketplace-kit:2.0' } }
-
-      environment {
-        MPKIT_URL = "${production_url}"
-      }
-
-      when {
-        expression { return params.MP_URL.isEmpty() }
-        anyOf { branch 'master' }
-      }
-
-      steps {
-        sh 'marketplace-kit deploy'
-      }
-    }
   }
 
   post {
     success {
-      slackSend (channel: "#notifications-example", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
+      slackSend (channel: "#notifications_example", color: '#00FF00', message: "Payments SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
     }
 
     failure {
-      slackSend (channel: "#notifications-example", color: '#FF0000', message: "FAILED: <${env.BUILD_URL}|Open build details> - ${buildDuration()}")
+      slackSend (channel: "#notifications_example", color: '#FF0000', message: "Payments FAILED: <${env.BUILD_URL}|Open build details> - ${buildDuration()}")
     }
   }
 }
 
 def commitInfo() {
-  GH_URL = "https://github.com/mdyd-dev/marketplace-nearme-example"
+  GH_URL = "https://github.com/mdyd-dev/platformos-payment-examples"
 
   def commitSha = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
   // def commitAuthor = sh(returnStdout: true, script: 'git log --no-merges --format="%an" -1').trim()
