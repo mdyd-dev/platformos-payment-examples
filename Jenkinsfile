@@ -1,6 +1,6 @@
 @Library('pipeline-utils')_  // it's not a typo
 
-def staging_url = "https://nearme-example.staging.oregon.platform-os.com"
+def staging_url = "https://payment-examples.staging.oregon.platform-os.com"
 def production_url = "https://examples.platform-os.com"
 
 pipeline {
