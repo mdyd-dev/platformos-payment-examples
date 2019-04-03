@@ -1,7 +1,6 @@
 @Library('pipeline-utils')_  // it's not a typo
 
 def staging_url = "https://payment-examples.staging.oregon.platform-os.com"
-def production_url = "https://examples.platform-os.com"
 
 pipeline {
   agent any
@@ -73,32 +72,15 @@ pipeline {
         sh 'npm run test-ci'
       }
     }
-
-    stage('Deploy production') {
-      agent { docker { image 'platformos/marketplace-kit:2.0' } }
-
-      environment {
-        MPKIT_URL = "${production_url}"
-      }
-
-      when {
-        expression { return params.MP_URL.isEmpty() }
-        anyOf { branch 'master' }
-      }
-
-      steps {
-        sh 'marketplace-kit deploy'
-      }
-    }
   }
 
   post {
     success {
-      slackSend (channel: "#notifications-example", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
+      slackSend (channel: "#staging_sanity_check", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
     }
 
     failure {
-      slackSend (channel: "#notifications-example", color: '#FF0000', message: "FAILED: <${env.BUILD_URL}|Open build details> - ${buildDuration()}")
+      slackSend (channel: "#staging_sanity_check", color: '#FF0000', message: "FAILED: <${env.BUILD_URL}|Open build details> - ${buildDuration()}")
     }
   }
 }
