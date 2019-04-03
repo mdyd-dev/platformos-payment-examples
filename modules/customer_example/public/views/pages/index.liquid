@@ -1,0 +1,34 @@
+---
+slug: customer
+authorization_policies:
+- modules/payments/require_user
+metadata:
+  description: Saving Customer with Credit Card [WIP]
+---
+{% assign gateway_name = 'stripe' %}
+{% export gateway_name, namespace: "payments"  %}
+
+{%- parse_json 'data' -%}
+  {
+    "email": "{{ context.current_user.email }}",
+    "description": "My Best Customer",
+    "external_id": {{ context.current_user.id }}
+  }
+{%- endparse_json -%}
+
+{%- parse_json 'config' -%}
+  {
+    "button": "Add Credit Card",
+    "label": "Save",
+    "redirect_to": "/customer"
+  }
+{%- endparse_json -%}
+
+{%-
+  include_form 'modules/payments/gateway_request_form',
+  request_type: 'create_customer'
+  config: config
+  data: data
+%}
+
+{% include 'modules/customer_example/list' %}
