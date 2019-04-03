@@ -104,7 +104,7 @@ pipeline {
 }
 
 def commitInfo() {
-  GH_URL = "https://github.com/mdyd-dev/marketplace-nearme-example"
+  GH_URL = "https://github.com/mdyd-dev/platformos-payment-examples"
 
   def commitSha = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
   // def commitAuthor = sh(returnStdout: true, script: 'git log --no-merges --format="%an" -1').trim()
