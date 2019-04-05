@@ -4,7 +4,8 @@ export default class Stripe {
   constructor() {
     this.button = {
       submit: Selector('button.stripe-button-el'),
-      submitCharge: Selector('button[type="submit"]')
+      submitCharge: Selector('button[type="submit"]'),
+      deleteCard: Selector('.deleteStripe')
     };
     this.iframe = {
       iframeStripe: Selector('iframe[name="stripe_checkout_app"]'),

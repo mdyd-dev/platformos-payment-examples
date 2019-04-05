@@ -17,40 +17,28 @@ fixture('Stripe')
   .page(process.env.MP_URL)
   .beforeEach(async t => {
     await stripe.login(email, password);
-    await t.navigateTo('/payments');
+    await t.navigateTo('/customer');
   });
 
-test('Pay by using valid credit card', async t => {
-  await checkLiquidErrors({ t, Selector });
+const nameInput = Selector('.deleteStripe');
+test('Add new customer with credit card', async t => {
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
     .typeText(stripe.input.cardNumber, VALID_CC)
     .typeText(stripe.input.date, '12/23')
     .typeText(stripe.input.ccv, '111')
-    .typeText(stripe.input.zip, faker.address.zipCode())
-    .click(stripe.button.submitCharge);
-
-  /*
-    Im pretty sure its not testing what its supposed to test, but i give up on trying to test 
-    this stripe-iframe-js-async-magic-mumbo-jumbo.
-    
-    How do I know it doesnt test anything? :-)
-      `await getBtAlertElement({ Selector }).count === undefined`
-  */
-  await t.expect(await getBtAlertElement({ Selector })).ok();
+    .click(stripe.button.submitCharge)
+    .wait(5000);
 });
 
-test('Pay by using invalid card with declined code', async t => {
-  await checkLiquidErrors({ t, Selector });
-  await t
-    .click(stripe.button.submit)
-    .switchToIframe(stripe.iframe.iframeStripe)
-    .typeText(stripe.input.cardNumber, INVALID_CC)
-    .typeText(stripe.input.date, '12/23')
-    .typeText(stripe.input.ccv, '111')
-    .typeText(stripe.input.zip, faker.address.zipCode())
-    .click(stripe.button.submitCharge);
 
-  await t.expect(stripe.iframe.validation.textContent).contains('This card was declined.');
+test('Delete credit card', async t => {
+  await nameInput();
+
+  await t.expect(stripe.button.deleteCard.exists).ok()
+    .click(stripe.button.deleteCard)
+    .expect(Selector('.alert').withText('You have successfully deleted credit card').exists)
+    .ok();
 });
+
