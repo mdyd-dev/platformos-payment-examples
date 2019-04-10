@@ -1,0 +1,30 @@
+{% assign gateway_name = 'stripe' %}
+{% export gateway_name, namespace: "payments"  %}
+
+{% query_graph "modules/payments/get_accounts_by_external_id", external_id: context.current_user.id %}
+{% assign account = g.customizations.results.last %}
+
+{%- parse_json 'config' -%}
+  {
+    "button": "Save"
+  }
+{%- endparse_json -%}
+
+{%- parse_json 'data' -%}
+  {
+    "email": "{{ context.current_user.email }}",
+    "external_id": "{{ context.current_user.id }}",
+    "country": "US", 
+    "gateway_id": "{{ account.gateway_id }}"
+  }
+{%- endparse_json -%}
+
+{% query_graph "modules/payments/gateway_get", data: data, template: "modules/stripe/get_account" %}
+{% parse_json 'response' %}{{ g.api_call_send.response.body }}{% endparse_json %}
+{%-
+  include_form 'modules/payments/gateway_request_form',
+  request_type: 'create_account'
+  config: config
+  data: data,
+  response: response
+%}
