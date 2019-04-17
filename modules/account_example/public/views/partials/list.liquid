@@ -1,3 +1,5 @@
+{% assign gateway_name = 'stripe' %}
+{% export gateway_name, namespace: "payments"  %}
 <div class="mt-4">
   {% query_graph "modules/payments/get_accounts_by_external_id", external_id: context.current_user.id %}
 
@@ -15,10 +17,16 @@
         {% assign p = account.properties %}
         <tr>
           <td>{{ account.id }}</td>
-          <td>{{ account.state }}</td>
+          <td>{{ account.properties.state }}</td>
           <td>
-            <a class="btn btn-primary" href="/account/edit/{{ account.id }}">Edit</a>
-          </td>
+            <div class='row'>
+              <div class='col-6'>
+                <a class="btn btn-primary" href="/account/edit/{{ account.id }}">Edit</a>
+              </div>
+              <div class='col-6'>
+                {% include 'modules/payments/delete_account', id: account.id %}</td>
+              </div>
+            </div>
         </tr>
       {% endfor %}
     </table>

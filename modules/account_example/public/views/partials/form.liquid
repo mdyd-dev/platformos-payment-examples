@@ -14,8 +14,8 @@
   {
     "email": "{{ context.current_user.email }}",
     "external_id": "{{ context.current_user.id }}",
-    "country": "US", 
-    "gateway_id": "{{ account.gateway_id }}"
+    "gateway_id": "{{ account.gateway_id }}",
+    "id": "{{ account.id }}"
   }
 {%- endparse_json -%}
 
