@@ -5,7 +5,7 @@ import faker from 'faker';
 import Stripe from './page-object';
 import Login from '../../../tests/e2e/page-objects/login';
 import {
-  getBtAlertText,
+  getBtAlertText
 } from '@platform-os/testcafe-helpers';
 
 const stripe = new Stripe();
@@ -16,7 +16,7 @@ const {
   password
 } = {
   email: 'test_stripe@test.com',
-  password: 'password'
+  password: 'password',
 };
 
 const data = {
@@ -26,9 +26,13 @@ const data = {
     accountHolderName: 'John Smith',
     firstName: 'John',
     lastName: 'Smith',
-    dateOfBirth: '31/01/1990'
-  }
-}
+    dateOfBirth: '31/01/1990',
+    address: '67 Woolnough Road',
+    city: 'BLACKWOOD',
+    state: 'South Australia',
+    code: '5051'
+  },
+};
 
 fixture('Merchant Account')
   .page(process.env.MP_URL)
@@ -38,22 +42,26 @@ fixture('Merchant Account')
   });
 
 test('Add new account', async t => {
-  await t
-    .click(stripe.button.addAccount)
+  await t.click(stripe.button.addAccount);
 
   await t
     .click(Selector('#gridCheck'))
-    .expect(stripe.button.submit.exists).ok()
+    .expect(stripe.button.submit.exists)
+    .ok()
     .click(stripe.button.submit);
 
-  await t.expect(await getBtAlertText({
-      type: 'success',
-      Selector
-    }))
+  await t
+    .expect(
+      await getBtAlertText({
+        type: 'success',
+        Selector,
+      })
+    )
     .contains('You have successfully created an account');
 
   await t
-    .expect(stripe.input.routingNumber.exists).ok()
+    .expect(stripe.input.routingNumber.exists)
+    .ok()
     .typeText(stripe.input.routingNumber, data.au.routingNumber)
     .typeText(stripe.input.accountNumber, data.au.accountNumber)
     .typeText(stripe.input.accountHolderName, data.au.accountHolderName)
@@ -62,16 +70,89 @@ test('Add new account', async t => {
     .typeText(stripe.input.dateOfBirth, data.au.dateOfBirth)
     .click(stripe.button.submit);
 
-  await t.expect(await getBtAlertText({
-      type: 'success',
-      Selector
-    }))
+  await t
+    .expect(
+      await getBtAlertText({
+        type: 'success',
+        Selector,
+      })
+    )
     .contains('You have successfully created an account\n')
+    .expect(Selector('.badge').withText('Payouts enabled').exists)
+    .ok()
+    .expect(Selector('.badge').withText('Payments enabled').exists)
+    .ok();
 
-    .expect(Selector('.badge').withText('Payouts enabled').exists).ok()
-    .expect(Selector('.badge').withText('Payments enabled').exists).ok();
+  await t.navigateTo('/account').click(stripe.button.deleteAccount);
 
-  await t.navigateTo('/account')
+  await t
+    .expect(
+      await getBtAlertText({
+        type: 'success',
+        Selector,
+      })
+    )
+    .contains('You have successfully deleted an account');
+});
+
+test('Update of necessary data', async t => {
+  await t.click(stripe.button.addAccount);
+
+  await t
+    .click(Selector('#gridCheck'))
+    .expect(stripe.button.submit.exists)
+    .ok()
+    .click(stripe.button.submit);
+
+  await t
+    .expect(
+      await getBtAlertText({
+        type: 'success',
+        Selector,
+      })
+    )
+    .contains('You have successfully created an account');
+
+  await t
+    .expect(stripe.input.routingNumber.exists)
+    .ok()
+    .typeText(stripe.input.routingNumber, data.au.routingNumber)
+    .typeText(stripe.input.accountNumber, data.au.accountNumber)
+    .typeText(stripe.input.accountHolderName, data.au.accountHolderName)
+    .typeText(stripe.input.firstName, data.au.firstName)
+    .typeText(stripe.input.lastName, data.au.lastName)
+    .typeText(stripe.input.dateOfBirth, data.au.dateOfBirth)
+    .typeText(stripe.input.city, data.au.city)
+    .typeText(stripe.input.state, data.au.state)
+    .typeText(stripe.input.code, data.au.code)
+    .click(stripe.button.submit)
+
+  await t
+    .expect(
+      await getBtAlertText({
+        type: 'success',
+        Selector,
+      })
+    )
+    .contains('You have successfully created an account\n')
+    .expect(Selector('.badge').withText('Payouts enabled').exists)
+    .ok()
+    .expect(Selector('.badge').withText('Payments enabled').exists)
+    .ok();
+
+  await t
+    .navigateTo('/account')
+    .click(stripe.link.editAccount)
+    .expect((stripe.element.address).exists).ok()
+  await t
+    .typeText(stripe.input.address, data.au.address)
+    .click(stripe.button.submit);
+  await t
+    .navigateTo('/account')
+    .click(stripe.link.editAccount)
+    .expect((stripe.element.address).exists).notOk()
+  await t
+    .navigateTo('/account')
     .click(stripe.button.deleteAccount)
 
   await t.expect(await getBtAlertText({
