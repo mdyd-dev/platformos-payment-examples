@@ -3,7 +3,7 @@ import {
 } from 'testcafe';
 import faker from 'faker';
 import Stripe from './page-object';
-import Login from '../../../tests/e2e/page-objects/Login';
+import Login from '../../../tests/e2e/page-objects/login';
 import {
   getBtAlertText
 } from '@platform-os/testcafe-helpers';
