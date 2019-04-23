@@ -1,11 +1,21 @@
-import { Selector } from 'testcafe';
+import {
+  Selector
+} from 'testcafe';
 import faker from 'faker';
 import Stripe from './page-object';
-import { checkLiquidErrors, getBtAlertElement } from '@platform-os/testcafe-helpers';
+import Login from '../../../tests/e2e/page-objects/Login';
+import {
+  checkLiquidErrors,
+  getBtAlertElement
+} from '@platform-os/testcafe-helpers';
 
 const stripe = new Stripe();
+const login = new Login();
 
-const { email, password } = {
+const {
+  email,
+  password
+} = {
   email: 'test_stripe@test.com',
   password: 'password'
 };
@@ -16,12 +26,15 @@ const INVALID_CC = '4000 0000 0000 0002';
 fixture('Stripe')
   .page(process.env.MP_URL)
   .beforeEach(async t => {
-    await stripe.login(email, password);
+    await login.login(email, password);
     await t.navigateTo('/payments');
   });
 
 test('Pay by using valid credit card', async t => {
-  await checkLiquidErrors({ t, Selector });
+  await checkLiquidErrors({
+    t,
+    Selector
+  });
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
@@ -38,11 +51,16 @@ test('Pay by using valid credit card', async t => {
     How do I know it doesnt test anything? :-)
       `await getBtAlertElement({ Selector }).count === undefined`
   */
-  await t.expect(await getBtAlertElement({ Selector })).ok();
+  await t.expect(await getBtAlertElement({
+    Selector
+  })).ok();
 });
 
 test('Pay by using invalid card with declined code', async t => {
-  await checkLiquidErrors({ t, Selector });
+  await checkLiquidErrors({
+    t,
+    Selector
+  });
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
