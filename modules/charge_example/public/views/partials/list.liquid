@@ -1,19 +1,21 @@
 <div class="mt-4">
   <h4>List of last five test payments:</h4>
   {% query_graph "modules/payments/get_payments", per_page: 5 %}
-  <table>
-      <tr>
-        <th>ID</th>
-        <th>State</th>
-        <th>Payer</th>
-        <th>Amount</th>
-      </tr>
+  <table class="table">
+    <tr>
+      <th>ID</th>
+      <th>State</th>
+      <th>Payer</th>
+      <th>Amount</th>
+      <th>Actions</th>
+    </tr>
     {% for payment in g.payments.results  %}
       <tr>
         <td>{{ payment.id }}</td>
-        <td>{% if payment.properties.paid_at != blank %}Paid{% elsif payment.properties.failed_at != blank %}Failed{% else %}Pending{% endif %}</td>
+        <td>{{ payment.properties.state | capitalize }}</td>
         <td>{{ payment.user.name }}</td>
         <td>{{ payment.properties.amount_cents | pricify_cents }}</td>
+        <td>{% include 'modules/payments/create_refund', payment: payment %}</td>
       </tr>
     {% endfor %}
   </table>
