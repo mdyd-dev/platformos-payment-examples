@@ -8,17 +8,17 @@
 
 ## List of Examples
 
- #### charge example
+ #### Charge example
  - [x] create charge with credit card
  - [x] refund charge
 
- #### customer example
+ #### Customer example
  - [x] create customer with credit card
  - [x] delete customer with credit card
  - [x] charge customer with credit card
  - [x] charge customer with credit card
 
- #### account example
+ #### Account example
  - [x] create custom Stripe account
  - [x] delete custom Stripe account
  - [x] edit custom Stripe account
