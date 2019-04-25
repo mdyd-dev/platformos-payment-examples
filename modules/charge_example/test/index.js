@@ -5,6 +5,10 @@ import faker from 'faker';
 import Stripe from './page-object';
 import Login from '../../../tests/e2e/page-objects/login';
 import {
+  user_stripe,
+  credit_card
+} from '../../../tests/e2e/data/data.js';
+import {
   checkLiquidErrors,
   getBtAlertElement
 } from '@platform-os/testcafe-helpers';
@@ -12,21 +16,10 @@ import {
 const stripe = new Stripe();
 const login = new Login();
 
-const {
-  email,
-  password
-} = {
-  email: 'test_stripe@test.com',
-  password: 'password'
-};
-
-const VALID_CC = '4242 4242 4242 4242';
-const INVALID_CC = '4000 0000 0000 0002';
-
 fixture('Stripe')
   .page(process.env.MP_URL)
   .beforeEach(async t => {
-    await login.login(email, password);
+    await login.login(user_stripe.email, user_stripe.password);
     await t.navigateTo('/payments');
   });
 
@@ -38,7 +31,7 @@ test('Pay by using valid credit card', async t => {
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
-    .typeText(stripe.input.cardNumber, VALID_CC)
+    .typeText(stripe.input.cardNumber, credit_card.VALID_CC)
     .typeText(stripe.input.date, '12/23')
     .typeText(stripe.input.ccv, '111')
     .typeText(stripe.input.zip, faker.address.zipCode())
@@ -64,7 +57,7 @@ test('Pay by using invalid card with declined code', async t => {
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
-    .typeText(stripe.input.cardNumber, INVALID_CC)
+    .typeText(stripe.input.cardNumber, credit_card.INVALID_CC)
     .typeText(stripe.input.date, '12/23')
     .typeText(stripe.input.ccv, '111')
     .typeText(stripe.input.zip, faker.address.zipCode())

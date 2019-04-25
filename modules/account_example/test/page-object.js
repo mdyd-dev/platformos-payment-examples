@@ -18,7 +18,8 @@ export default class Stripe {
       editAccount: Selector('a').withText('Edit')
     }
     this.element = {
-      address: Selector('.mt-3 li').withText('Address')
+      address: Selector('.mt-3 li').withText('Address'),
+      state: Selector('table td:nth-of-type(2)')
     }
     this.input = {
       country: Selector['data-country'],
