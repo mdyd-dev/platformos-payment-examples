@@ -9,6 +9,7 @@
       <th>Exp</th>
       <th>Actions</th>
       <th></th>
+      <th></th>
     </tr>
     {% for credit_card in g.customizations.results  %}
       {% assign p = credit_card.properties %}
@@ -18,7 +19,10 @@
         <td>{{ p.last4 }}</td>
         <td>{{ p.exp_month }}/{{ p.exp_year }}</td>
         <td>
-          {% include 'modules/payments/charge_credit_card', credit_card_id: credit_card.id, amount: 500 %}
+          {% include 'modules/payments/create_payment', credit_card_id: credit_card.id, amount: 500 %}
+        </td>
+        <td>
+          {% include 'modules/payments/api_create_payment', credit_card_id: credit_card.id, amount: 1000 %}
         </td>
         <td>
           {% include 'modules/payments/delete_credit_card', id: credit_card.id %}
