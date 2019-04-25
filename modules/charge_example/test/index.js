@@ -1,31 +1,37 @@
-import { Selector } from 'testcafe';
+import {
+  Selector
+} from 'testcafe';
 import faker from 'faker';
 import Stripe from './page-object';
-import { checkLiquidErrors, getBtAlertElement } from '@platform-os/testcafe-helpers';
+import Login from '../../../tests/e2e/page-objects/login';
+import {
+  user_stripe,
+  credit_card
+} from '../../../tests/e2e/data/data.js';
+import {
+  checkLiquidErrors,
+  getBtAlertElement
+} from '@platform-os/testcafe-helpers';
 
 const stripe = new Stripe();
-
-const { email, password } = {
-  email: 'test_stripe@test.com',
-  password: 'password'
-};
-
-const VALID_CC = '4242 4242 4242 4242';
-const INVALID_CC = '4000 0000 0000 0002';
+const login = new Login();
 
 fixture('Stripe')
   .page(process.env.MP_URL)
   .beforeEach(async t => {
-    await stripe.login(email, password);
+    await login.login(user_stripe.email, user_stripe.password);
     await t.navigateTo('/payments');
   });
 
 test('Pay by using valid credit card', async t => {
-  await checkLiquidErrors({ t, Selector });
+  await checkLiquidErrors({
+    t,
+    Selector
+  });
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
-    .typeText(stripe.input.cardNumber, VALID_CC)
+    .typeText(stripe.input.cardNumber, credit_card.VALID_CC)
     .typeText(stripe.input.date, '12/23')
     .typeText(stripe.input.ccv, '111')
     .typeText(stripe.input.zip, faker.address.zipCode())
@@ -38,15 +44,20 @@ test('Pay by using valid credit card', async t => {
     How do I know it doesnt test anything? :-)
       `await getBtAlertElement({ Selector }).count === undefined`
   */
-  await t.expect(await getBtAlertElement({ Selector })).ok();
+  await t.expect(await getBtAlertElement({
+    Selector
+  })).ok();
 });
 
 test('Pay by using invalid card with declined code', async t => {
-  await checkLiquidErrors({ t, Selector });
+  await checkLiquidErrors({
+    t,
+    Selector
+  });
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
-    .typeText(stripe.input.cardNumber, INVALID_CC)
+    .typeText(stripe.input.cardNumber, credit_card.INVALID_CC)
     .typeText(stripe.input.date, '12/23')
     .typeText(stripe.input.ccv, '111')
     .typeText(stripe.input.zip, faker.address.zipCode())

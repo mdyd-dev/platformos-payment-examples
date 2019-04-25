@@ -1,23 +1,24 @@
-import { Selector } from 'testcafe';
+import {
+  Selector
+} from 'testcafe';
 import faker from 'faker';
 import Stripe from './page-object';
-import { checkLiquidErrors, getBtAlertElement } from '@platform-os/testcafe-helpers';
+import Login from '../../../tests/e2e/page-objects/login';
+import {
+  credit_card,
+  user_stripe
+} from '../../../tests/e2e/data/data.js';
+import {
+  getBtAlertText
+} from '@platform-os/testcafe-helpers';
 
 const stripe = new Stripe();
-
-const { email, password } = {
-  email: 'test_stripe@test.com',
-  password: 'password'
-};
-
-const VALID_CC = '4242 4242 4242 4242';
-const INVALID_CC = '4000 0000 0000 0002';
-const VALID_NO_CHARGE = '4000 0000 0000 0341';
+const login = new Login();
 
 fixture('Stripe')
   .page(process.env.MP_URL)
   .beforeEach(async t => {
-    await stripe.login(email, password);
+    await login.login(user_stripe.email, user_stripe.password);
     await t.navigateTo('/customer');
   });
 
@@ -28,7 +29,7 @@ test('Add new customer with credit card', async t => {
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
-    .typeText(stripe.input.cardNumber, VALID_CC)
+    .typeText(stripe.input.cardNumber, credit_card.VALID_CC)
     .typeText(stripe.input.date, '12/23')
     .typeText(stripe.input.ccv, '111')
     .click(stripe.button.submitCharge)
@@ -37,23 +38,29 @@ test('Add new customer with credit card', async t => {
 
 test('Charge and delete valid credit card', async t => {
   await chargeCardButton();
-
   await t.expect(stripe.button.chargeCard.exists).ok()
-    .click(stripe.button.chargeCard)
-    .expect(Selector('.alert').withText('You have successfully created payment').exists)
-    .ok();
 
+  await t.click(stripe.button.chargeCard);
+  await t.expect(await getBtAlertText({
+      type: 'success',
+      Selector
+    }))
+    .contains('You have successfully created payment');
   await t.expect(stripe.button.deleteCard.exists).ok()
-    .click(stripe.button.deleteCard)
-    .expect(Selector('.alert').withText('You have successfully deleted credit card').exists)
-    .ok();
+
+  await t.click(stripe.button.deleteCard)
+  await t.expect(await getBtAlertText({
+      type: 'success',
+      Selector
+    }))
+    .contains('You have successfully deleted credit card');
 });
 
 test('Add new customer with invalid credit card', async t => {
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
-    .typeText(stripe.input.cardNumber, VALID_NO_CHARGE)
+    .typeText(stripe.input.cardNumber, credit_card.VALID_NO_CHARGE)
     .typeText(stripe.input.date, '12/23')
     .typeText(stripe.input.ccv, '111')
     .click(stripe.button.submitCharge)
@@ -62,14 +69,20 @@ test('Add new customer with invalid credit card', async t => {
 
 test('Charge and delete invalid credit card', async t => {
   await chargeCardButton();
+  await t.expect(stripe.button.chargeCard.exists).ok();
 
-  await t.expect(stripe.button.chargeCard.exists).ok()
-    .click(stripe.button.chargeCard)
-    .expect(Selector('.alert').withText('Your card was declined.').exists)
-    .ok();
-
+  await t.click(stripe.button.chargeCard)
+  await t.expect(await getBtAlertText({
+      type: 'success',
+      Selector
+    }))
+    .contains('Your card was declined.')
   await t.expect(stripe.button.deleteCard.exists).ok()
-    .click(stripe.button.deleteCard)
-    .expect(Selector('.alert').withText('You have successfully deleted credit card').exists)
-    .ok();
+
+  await t.click(stripe.button.deleteCard);
+  await t.expect(await getBtAlertText({
+      type: 'success',
+      Selector
+    }))
+    .contains('You have successfully deleted credit card')
 });
