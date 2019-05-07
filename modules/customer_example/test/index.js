@@ -56,7 +56,7 @@ test('Charge and delete valid credit card', async t => {
     .contains('You have successfully deleted credit card');
 });
 
-test('Add new customer with invalid credit card', async t => {
+test.skip('Add new customer with invalid credit card', async t => {
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
@@ -67,7 +67,7 @@ test('Add new customer with invalid credit card', async t => {
     .wait(5000);
 });
 
-test('Charge and delete invalid credit card', async t => {
+test.skip('Charge and delete invalid credit card', async t => {
   await chargeCardButton();
   await t.expect(stripe.button.chargeCard.exists).ok();
 
