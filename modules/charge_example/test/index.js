@@ -15,7 +15,7 @@ import {
 
 const stripe = new Stripe();
 const login = new Login();
-//CI
+
 fixture('Stripe')
   .page(process.env.MP_URL)
   .beforeEach(async t => {
