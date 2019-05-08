@@ -76,11 +76,11 @@ pipeline {
 
   post {
     success {
-      slackSend (channel: "#staging_sanity_check", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
+      slackSend (channel: "#staging_sanity_check", color: '#00FF00', message: "SUCCESS Payments Example: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
     }
 
     failure {
-      slackSend (channel: "#staging_sanity_check", color: '#FF0000', message: "FAILED: <${env.BUILD_URL}|Open build details> - ${buildDuration()}")
+      slackSend (channel: "#staging_sanity_check", color: '#FF0000', message: "FAILED Payments Example: <${env.BUILD_URL}|Open build details> - ${buildDuration()}")
     }
   }
 }
