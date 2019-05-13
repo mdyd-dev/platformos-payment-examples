@@ -1,0 +1,15 @@
+---
+slug: admin
+authorization_policies:
+- modules/customer_example/require_user
+---
+{% if params.slug2 == blank %}
+  <a href="/admin/stripe">Stripe Configuration</a>
+{% else %}
+  {%- include 'modules/stripe/shared/api_credentials' -%}
+  {% assign webhook_listen_url = "https://" | append: context.location.host | append: "/payments/webhooks/listen" %}
+  {% graphql g = 'modules/payments/get_webhook_endpoints', livemode: context.exports.payment.livemode, url: webhook_listen_url %}
+  {% assign last_webhook_config = g.customizations.results.last %}
+  {% assign webhook_secret = last_webhook_config.properties.secret %}
+  {{ webhook_secret }}
+{% endif %}
