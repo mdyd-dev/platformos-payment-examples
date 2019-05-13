@@ -1,29 +1,24 @@
-import {
-  Selector
-} from 'testcafe';
-import faker from 'faker';
-import Stripe from './page-object';
-import Login from '../../../tests/e2e/page-objects/login';
-import {
-  user_stripe,
-  credit_card
-} from '../../../tests/e2e/data/data.js';
+import { Selector } from "testcafe";
+import faker from "faker";
+import Stripe from "./page-object";
+import Login from "../../../tests/e2e/page-objects/login";
+import { user_stripe, credit_card } from "../../../tests/e2e/data/data.js";
 import {
   checkLiquidErrors,
   getBtAlertElement
-} from '@platform-os/testcafe-helpers';
+} from "@platform-os/testcafe-helpers";
 
 const stripe = new Stripe();
 const login = new Login();
 
-fixture('Stripe')
+fixture("Stripe")
   .page(process.env.MP_URL)
   .beforeEach(async t => {
     await login.login(user_stripe.email, user_stripe.password);
-    await t.navigateTo('/payments');
+    await t.navigateTo("/payments");
   });
-
-test('Pay by using valid credit card', async t => {
+//CI
+test("Pay by using valid credit card", async t => {
   await checkLiquidErrors({
     t,
     Selector
@@ -32,8 +27,8 @@ test('Pay by using valid credit card', async t => {
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
     .typeText(stripe.input.cardNumber, credit_card.VALID_CC)
-    .typeText(stripe.input.date, '12/23')
-    .typeText(stripe.input.ccv, '111')
+    .typeText(stripe.input.date, "12/23")
+    .typeText(stripe.input.ccv, "111")
     .typeText(stripe.input.zip, faker.address.zipCode())
     .click(stripe.button.submitCharge);
 
@@ -44,12 +39,16 @@ test('Pay by using valid credit card', async t => {
     How do I know it doesnt test anything? :-)
       `await getBtAlertElement({ Selector }).count === undefined`
   */
-  await t.expect(await getBtAlertElement({
-    Selector
-  })).ok();
+  await t
+    .expect(
+      await getBtAlertElement({
+        Selector
+      })
+    )
+    .ok();
 });
 
-test('Pay by using invalid card with declined code', async t => {
+test("Pay by using invalid card with declined code", async t => {
   await checkLiquidErrors({
     t,
     Selector
@@ -58,10 +57,12 @@ test('Pay by using invalid card with declined code', async t => {
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
     .typeText(stripe.input.cardNumber, credit_card.INVALID_CC)
-    .typeText(stripe.input.date, '12/23')
-    .typeText(stripe.input.ccv, '111')
+    .typeText(stripe.input.date, "12/23")
+    .typeText(stripe.input.ccv, "111")
     .typeText(stripe.input.zip, faker.address.zipCode())
     .click(stripe.button.submitCharge);
 
-  await t.expect(stripe.iframe.validation.textContent).contains('This card was declined.');
+  await t
+    .expect(stripe.iframe.validation.textContent)
+    .contains("This card was declined.");
 });
