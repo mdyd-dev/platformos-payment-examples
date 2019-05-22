@@ -17,7 +17,7 @@ fixture("Stripe")
     await login.login(user_stripe.email, user_stripe.password);
     await t.navigateTo("/payments");
   });
-//CI
+
 test("Pay by using valid credit card", async t => {
   await checkLiquidErrors({
     t,
@@ -46,23 +46,4 @@ test("Pay by using valid credit card", async t => {
       })
     )
     .ok();
-});
-
-test("Pay by using invalid card with declined code", async t => {
-  await checkLiquidErrors({
-    t,
-    Selector
-  });
-  await t
-    .click(stripe.button.submit)
-    .switchToIframe(stripe.iframe.iframeStripe)
-    .typeText(stripe.input.cardNumber, credit_card.INVALID_CC)
-    .typeText(stripe.input.date, "12/23")
-    .typeText(stripe.input.ccv, "111")
-    .typeText(stripe.input.zip, faker.address.zipCode())
-    .click(stripe.button.submitCharge);
-
-  await t
-    .expect(stripe.iframe.validation.textContent)
-    .contains("This card was declined.");
 });
