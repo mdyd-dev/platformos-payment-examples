@@ -1,0 +1,39 @@
+---
+slug: elements
+authorization_policies:
+- modules/charge_example/require_user
+metadata:
+  description: Integrating Stripe payments with Stripe Elements
+  docs_slug: tutorials/payments/integrating-stripe
+---
+{% assign gateway_name = 'stripe' %}
+{% export gateway_name, namespace: "payments"  %}
+
+{%- parse_json 'data' -%}
+  {
+    "email": "{{ context.current_user.email }}",
+    "currency": "USD",
+    "description": "Charge Example",
+    "statement_descriptor": "Example 1.",
+    "capture": "false",
+    "amount": "500"
+  }
+{%- endparse_json -%}
+
+{%- parse_json 'config' -%}
+  {
+    "button": "Pay Now",
+    "require_zip": "true",
+    "redirect_to": "/elements"
+  }
+{%- endparse_json -%}
+
+{%-
+  include_form 'modules/payments/gateway_request_form',
+  request_type: 'create_payment',
+  gateway_template: 'modules/elements_example/create_payment_elements',
+  config: config,
+  data: data
+%}
+
+{% include 'modules/elements_example/list' %}

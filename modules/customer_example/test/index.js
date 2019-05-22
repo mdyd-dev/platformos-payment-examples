@@ -25,7 +25,7 @@ fixture('Stripe')
 const deleteCardButton = Selector('.delete-stripe');
 const chargeCardButton = Selector('.charge-stripe');
 
-test.skip('Add new customer with credit card', async t => {
+test('Add new customer with credit card', async t => {
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
@@ -36,7 +36,7 @@ test.skip('Add new customer with credit card', async t => {
     .wait(5000);
 });
 
-test.skip('Charge and delete valid credit card', async t => {
+test('Charge and delete valid credit card', async t => {
   await chargeCardButton();
   await t.expect(stripe.button.chargeCard.exists).ok()
 
@@ -56,7 +56,7 @@ test.skip('Charge and delete valid credit card', async t => {
     .contains('You have successfully deleted credit card');
 });
 
-test.skip('Add new customer with invalid credit card', async t => {
+test('Add new customer with invalid credit card', async t => {
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
@@ -67,7 +67,7 @@ test.skip('Add new customer with invalid credit card', async t => {
     .wait(5000);
 });
 
-test.skip('Charge and delete invalid credit card', async t => {
+test('Charge and delete invalid credit card', async t => {
   await chargeCardButton();
   await t.expect(stripe.button.chargeCard.exists).ok();
 
