@@ -22,6 +22,8 @@ metadata:
 
 {%- parse_json 'config' -%}
   {
+    "gateway_template": "modules/elements_example/create_payment_elements",
+    "request_type": "create_payment",
     "button": "Pay Now",
     "require_zip": "true",
     "redirect_to": "/elements"
@@ -30,8 +32,6 @@ metadata:
 
 {%-
   include_form 'modules/payments/gateway_request_form',
-  request_type: 'create_payment',
-  gateway_template: 'modules/elements_example/create_payment_elements',
   config: config,
   data: data
 %}

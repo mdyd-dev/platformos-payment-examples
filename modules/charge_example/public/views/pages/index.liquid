@@ -23,6 +23,7 @@ metadata:
 {%- parse_json 'config' -%}
   {
     "button": "Pay Now",
+    "request_type": "create_payment",
     "require_zip": "true",
     "redirect_to": "/payments"
   }
@@ -30,7 +31,6 @@ metadata:
 
 {%-
   include_form 'modules/payments/gateway_request_form',
-  request_type: 'create_payment',
   config: config,
   data: data
 %}

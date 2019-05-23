@@ -20,14 +20,14 @@ metadata:
   {
     "button": "Add Credit Card",
     "label": "Save",
-    "redirect_to": "/customer"
+    "redirect_to": "/customer",
+    "request_type": "create_customer"
   }
 {%- endparse_json -%}
 
 {%-
   include_form 'modules/payments/gateway_request_form',
-  request_type: 'create_customer'
-  config: config
+  config: config,
   data: data
 %}
 

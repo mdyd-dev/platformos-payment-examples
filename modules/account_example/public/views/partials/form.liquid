@@ -6,7 +6,8 @@
 
 {%- parse_json 'config' -%}
   {
-    "button": "Save"
+    "button": "Save",
+    "request_type": "create_account"
   }
 {%- endparse_json -%}
 
@@ -21,8 +22,6 @@
 
 {%-
   include_form 'modules/payments/gateway_request_form',
-  request_type: 'create_account'
-  config: config
   data: data,
-  response: response
+  config: config
 %}
