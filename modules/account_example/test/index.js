@@ -1,9 +1,16 @@
-import { Selector } from "testcafe";
+import {
+  Selector
+} from "testcafe";
 import faker from "faker";
 import Stripe from "./page-object";
 import Login from "../../../tests/e2e/page-objects/login";
-import { ma_data, user_stripe } from "../../../tests/e2e/data/data.js";
-import { getBtAlertText } from "@platform-os/testcafe-helpers";
+import {
+  ma_data,
+  user_stripe
+} from "../../../tests/e2e/data/data.js";
+import {
+  getBtAlertText
+} from "@platform-os/testcafe-helpers";
 
 const stripe = new Stripe();
 const login = new Login();
@@ -73,7 +80,7 @@ test("Add new account", async t => {
     .contains("You have successfully deleted an account");
 });
 
-test("Update of necessary data", async t => {
+test.skip("Update of necessary data", async t => {
   await t.click(stripe.button.addAccount);
 
   await t
@@ -143,7 +150,7 @@ test("Update of necessary data", async t => {
     .contains("You have successfully deleted an account");
 });
 
-test("Pending state", async t => {
+test.skip("Pending state", async t => {
   await t.click(stripe.button.addAccount);
 
   await t
