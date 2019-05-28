@@ -79,7 +79,7 @@ test("Add new account", async t => {
     )
     .contains("You have successfully deleted an account");
 });
-
+//Skip tests
 test.skip("Update of necessary data", async t => {
   await t.click(stripe.button.addAccount);
 
