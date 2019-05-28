@@ -11,6 +11,7 @@
         <th>State</th>
         <th>Actions</th>
         <th></th>
+        <th></th>
       </tr>
 
       {% for account in g.customizations.results  %}
@@ -19,14 +20,14 @@
           <td>{{ account.id }}</td>
           <td>{{ account.properties.state }}</td>
           <td>
-            <div class='row'>
-              <div class='col-6'>
-                <a class="btn btn-primary" href="/account/edit/{{ account.id }}">Edit</a>
-              </div>
-              <div class='col-6'>
-                {% include 'modules/payments/delete_account', id: account.id %}</td>
-              </div>
-            </div>
+            <a class="btn btn-primary" href="/account/edit/{{ account.id }}">Edit</a>
+          </td>
+          <td>
+            {% include 'modules/payments/api_create_transfer', account: account, amount_cents: 300 %}
+          </td>
+          <td>
+            {% include 'modules/payments/delete_account', id: account.id %}
+          </td>
         </tr>
       {% endfor %}
     </table>
