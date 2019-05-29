@@ -19,7 +19,8 @@ export default class Stripe {
     }
     this.element = {
       address: Selector('.mt-3 li').withText('Address'),
-      state: Selector('table td:nth-of-type(2)')
+      state: Selector('table td:nth-of-type(2)'),
+      info: Selector('.mt-4 p')
     }
     this.input = {
       country: Selector['data-country'],

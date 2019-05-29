@@ -23,8 +23,15 @@ fixture("Merchant Account")
   });
 
 test("Add new account", async t => {
+  await t.expect(stripe.element.info.innerText).eql(`You don't have saved accounts yet, please add your first account.`)
+
   await t.click(stripe.button.addAccount);
 
+  await t
+    .expect(Selector(".badge").withText("Payouts disabled").exists)
+    .ok()
+    .expect(Selector(".badge").withText("Payments disabled").exists)
+    .ok();
   await t
     .click(Selector("#gridCheck"))
     .expect(stripe.button.submit.exists)
