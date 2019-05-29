@@ -6,7 +6,6 @@ import Stripe from "./page-object";
 import Login from "../../../tests/e2e/page-objects/login";
 import {
   ma_data,
-  user_stripe
 } from "../../../tests/e2e/data/data.js";
 import {
   getBtAlertText
@@ -15,15 +14,33 @@ import {
 const stripe = new Stripe();
 const login = new Login();
 
+const {
+  dev
+} = {
+  dev: {
+    email: faker.internet.exampleEmail(),
+    name: faker.name.firstName(),
+    password: faker.internet.password(),
+    phone: faker.phone.phoneNumber()
+  }
+};
+
 fixture("Merchant Account")
   .page(process.env.MP_URL)
-  .beforeEach(async t => {
-    await login.login(user_stripe.email, user_stripe.password);
-    await t.navigateTo("/account");
-  });
 
 test("Add new account", async t => {
-  await t.expect(stripe.element.info.innerText).eql(`You don't have saved accounts yet, please add your first account.`)
+  await t.click(stripe.link.signup)
+
+  await t
+    .click(stripe.link.devRegister)
+    .typeText(stripe.input.firstname, dev.name)
+    .typeText(stripe.input.email, dev.email)
+    .typeText(stripe.input.password, dev.password)
+    .typeText(stripe.input.phone, dev.phone)
+    .click(stripe.button.createAccount);
+
+  await login.login(dev.email, dev.password);
+  await t.navigateTo("/account");
 
   await t.click(stripe.button.addAccount);
 
