@@ -1,6 +1,5 @@
 import {
-  Selector,
-  t
+  Selector
 } from 'testcafe';
 
 export default class Stripe {
@@ -9,19 +8,29 @@ export default class Stripe {
       submit: Selector('button[type="submit"]'),
       addAccount: Selector('a[data-add-account]'),
       deleteAccount: Selector('.delete-stripe'),
+      createAccount: Selector('.btn.btn-primary'),
     };
     this.iframe = {
       iframeStripe: Selector('iframe[name="stripe_checkout_app"]'),
       validation: Selector('.Popover-content')
     };
     this.link = {
-      editAccount: Selector('a').withText('Edit')
+      editAccount: Selector('a').withText('Edit'),
+      signup: Selector('a').withText('Register'),
+      login: Selector('a').withText('Log in'),
+      devRegister: Selector('a').withText('Developer'),
+      clientRegister: Selector('a').withText('Client')
     }
     this.element = {
       address: Selector('.mt-3 li').withText('Address'),
-      state: Selector('table td:nth-of-type(2)')
+      state: Selector('table td:nth-of-type(2)'),
+      info: Selector('.mt-4 p')
     }
     this.input = {
+      firstname: Selector('#form_first_name'),
+      email: Selector('[type="email"]'),
+      password: Selector('[type="password"]'),
+      phone: Selector('#form_mobile_number'),
       country: Selector['data-country'],
       routingNumber: Selector('[data-routing-number]'),
       accountNumber: Selector('[data-account-number]'),
@@ -35,7 +44,6 @@ export default class Stripe {
       city: Selector('.person.border-bottom.border-light.mb-5 #input-city'),
       state: Selector('.person.border-bottom.border-light.mb-5 #input-state'),
       code: Selector('.person.border-bottom.border-light.mb-5 #input-zip'),
-
       cardNumber: Selector(
         '.Fieldset-childLeftRight > .Textbox-inputRow > input[type="tel"].Fieldset-input.Textbox-control'
       ),
