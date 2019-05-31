@@ -8,28 +8,31 @@
 
 ## List of Examples
 
+ #### Account example
+ - [x] create custom Stripe account
+ - [x] delete custom Stripe account
+ - [x] edit custom Stripe account
+ - [x] create charge with destination account
+ - [ ] refund charge with destination account (reverse transfer)
+ - [x] automated payouts
+ - [ ] webhooks
+
  #### Charge example
  - [x] create charge with credit card
  - [x] refund charge
+ - [x] display list of payments
 
  #### Customer example
  - [x] create customer with credit card
  - [x] delete customer with credit card
  - [x] charge customer with credit card
- - [x] charge customer with credit card
+ - [x] charge customer with credit card with API call
 
- #### Account example
- - [x] create custom Stripe account
- - [x] delete custom Stripe account
- - [x] edit custom Stripe account
- - [ ] create charge with destination account
- - [ ] refund charge with destination account (reverse transfer)
- - [ ] automated payouts
- - [ ] webhooks
+ #### Elements Example
+ - [x] create charge without capture (authorize) with Stripe Elements
+ - [x] capture authorized charge
+ - [x] refund capture charge
 
- #### Payout Example
- - [ ] create manual payout
- - [ ] reverse transfer
 
 
 
