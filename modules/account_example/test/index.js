@@ -33,10 +33,10 @@ test("Add new account", async t => {
 
   await t
     .click(stripe.link.devRegister)
-    .typeText(stripe.input.firstname, dev.name)
-    .typeText(stripe.input.email, dev.email)
-    .typeText(stripe.input.password, dev.password)
-    .typeText(stripe.input.phone, dev.phone)
+    .typeText(stripe.input.firstname, dev.name, { paste: true })
+    .typeText(stripe.input.email, dev.email, { paste: true })
+    .typeText(stripe.input.password, dev.password, { paste: true })
+    .typeText(stripe.input.phone, dev.phone, { paste: true })
     .click(stripe.button.createAccount);
 
   await login.login(dev.email, dev.password);
@@ -67,12 +67,12 @@ test("Add new account", async t => {
   await t
     .expect(stripe.input.routingNumber.exists)
     .ok()
-    .typeText(stripe.input.routingNumber, ma_data.au.routingNumber)
-    .typeText(stripe.input.accountNumber, ma_data.au.accountNumber)
-    .typeText(stripe.input.accountHolderName, ma_data.au.accountHolderName)
-    .typeText(stripe.input.firstName, ma_data.au.firstName)
-    .typeText(stripe.input.lastName, ma_data.au.lastName)
-    .typeText(stripe.input.dateOfBirth, ma_data.au.dateOfBirth)
+    .typeText(stripe.input.routingNumber, ma_data.au.routingNumber, { paste: true })
+    .typeText(stripe.input.accountNumber, ma_data.au.accountNumber, { paste: true })
+    .typeText(stripe.input.accountHolderName, ma_data.au.accountHolderName, { paste: true })
+    .typeText(stripe.input.firstName, ma_data.au.firstName, { paste: true })
+    .typeText(stripe.input.lastName, ma_data.au.lastName, { paste: true })
+    .typeText(stripe.input.dateOfBirth, ma_data.au.dateOfBirth, { paste: true })
     .click(stripe.button.submit);
 
   await t
@@ -125,15 +125,15 @@ test.skip("Update of necessary data", async t => {
   await t
     .expect(stripe.input.routingNumber.exists)
     .ok()
-    .typeText(stripe.input.routingNumber, ma_data.au.routingNumber)
-    .typeText(stripe.input.accountNumber, ma_data.au.accountNumber)
-    .typeText(stripe.input.accountHolderName, ma_data.au.accountHolderName)
-    .typeText(stripe.input.firstName, ma_data.au.firstName)
-    .typeText(stripe.input.lastName, ma_data.au.lastName)
-    .typeText(stripe.input.dateOfBirth, ma_data.au.dateOfBirth)
-    .typeText(stripe.input.city, ma_data.au.city)
-    .typeText(stripe.input.state, ma_data.au.state)
-    .typeText(stripe.input.code, ma_data.au.code)
+    .typeText(stripe.input.routingNumber, ma_data.au.routingNumber, { paste: true })
+    .typeText(stripe.input.accountNumber, ma_data.au.accountNumber, { paste: true })
+    .typeText(stripe.input.accountHolderName, ma_data.au.accountHolderName, { paste: true })
+    .typeText(stripe.input.firstName, ma_data.au.firstName, { paste: true })
+    .typeText(stripe.input.lastName, ma_data.au.lastName, { paste: true })
+    .typeText(stripe.input.dateOfBirth, ma_data.au.dateOfBirth, { paste: true })
+    .typeText(stripe.input.city, ma_data.au.city, { paste: true })
+    .typeText(stripe.input.state, ma_data.au.state, { paste: true })
+    .typeText(stripe.input.code, ma_data.au.code, { paste: true })
     .click(stripe.button.submit);
 
   await t
@@ -155,7 +155,7 @@ test.skip("Update of necessary data", async t => {
     .expect(stripe.element.address.exists)
     .ok();
   await t
-    .typeText(stripe.input.address, ma_data.au.address)
+    .typeText(stripe.input.address, ma_data.au.address, { paste: true })
     .click(stripe.button.submit);
   await t
     .navigateTo("/account")
@@ -195,8 +195,8 @@ test.skip("Pending state", async t => {
   await t
     .expect(stripe.input.routingNumber.exists)
     .ok()
-    .typeText(stripe.input.routingNumber, ma_data.au.routingNumber)
-    .typeText(stripe.input.accountNumber, ma_data.au.accountNumber)
+    .typeText(stripe.input.routingNumber, ma_data.au.routingNumber, { paste: true })
+    .typeText(stripe.input.accountNumber, ma_data.au.accountNumber, { paste: true })
     .click(stripe.button.submit);
 
   await t

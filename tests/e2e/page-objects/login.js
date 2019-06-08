@@ -20,14 +20,9 @@ export default class Login {
     const submitButton = Selector('button.btn.btn-primary');
 
     await t.navigateTo('/sign-in');
-
     await t
-      .typeText(this.input.email, username, {
-        replace: true
-      })
-      .typeText(this.input.password, password, {
-        replace: true
-      })
+      .typeText(this.input.email, username, { paste: true })
+      .typeText(this.input.password, password, { paste: true })
       .click(submitButton);
   }
 }

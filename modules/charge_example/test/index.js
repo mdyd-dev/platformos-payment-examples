@@ -14,6 +14,7 @@ import {
 } from "@platform-os/testcafe-helpers";
 
 const stripe = new Stripe();
+
 const login = new Login();
 
 fixture("Stripe")
@@ -31,16 +32,16 @@ test("Pay by using valid credit card", async t => {
   await t
     .click(stripe.button.submit)
     .switchToIframe(stripe.iframe.iframeStripe)
-    .typeText(stripe.input.cardNumber, credit_card.VALID_CC)
-    .typeText(stripe.input.date, "12/23")
-    .typeText(stripe.input.ccv, "111")
-    .typeText(stripe.input.zip, faker.address.zipCode())
+    .typeText(stripe.input.cardNumber, credit_card.VALID_CC, { paste: true })
+    .typeText(stripe.input.date, "12/23", { paste: true })
+    .typeText(stripe.input.ccv, "111", { paste: true })
+    .typeText(stripe.input.zip, faker.address.zipCode(), { paste: true })
     .click(stripe.button.submitCharge);
 
   /*
-    Im pretty sure its not testing what its supposed to test, but i give up on trying to test 
+    Im pretty sure its not testing what its supposed to test, but i give up on trying to test
     this stripe-iframe-js-async-magic-mumbo-jumbo.
-    
+
     How do I know it doesnt test anything? :-)
       `await getBtAlertElement({ Selector }).count === undefined`
   */
@@ -68,9 +69,9 @@ test("Refund", async t => {
     .click(stripe.button.submitCharge);
 
   /*
-    Im pretty sure its not testing what its supposed to test, but i give up on trying to test 
+    Im pretty sure its not testing what its supposed to test, but i give up on trying to test
     this stripe-iframe-js-async-magic-mumbo-jumbo.
-    
+
     How do I know it doesnt test anything? :-)
       `await getBtAlertElement({ Selector }).count === undefined`
   */
