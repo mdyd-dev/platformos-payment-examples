@@ -18,10 +18,10 @@ metadata:
 
 {%- parse_json 'config' -%}
   {
+    "request_type": "create_customer",
+    "success_path": "/customer",
     "button": "Add Credit Card",
-    "label": "Save",
-    "redirect_to": "/customer",
-    "request_type": "create_customer"
+    "button_modal": "Save"
   }
 {%- endparse_json -%}
 
