@@ -1,7 +1,7 @@
 {% assign gateway_name = 'stripe' %}
 {% export gateway_name, namespace: "payments"  %}
 
-{% query_graph "modules/payments/get_accounts_by_external_id", external_id: context.current_user.id %}
+{% graphql g = "modules/payments/get_accounts_by_external_id", external_id: context.current_user.id %}
 {% assign account = g.customizations.results.last %}
 
 {%- parse_json 'config' -%}

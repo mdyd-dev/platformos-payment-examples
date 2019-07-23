@@ -6,6 +6,11 @@ metadata:
   description: Integrating Stripe payments with Stripe Elements
   docs_slug: tutorials/payments/integrating-stripe
 ---
+{%- include 'modules/stripe/shared/api_credentials' -%}
+<script>
+  const stripe_pk = "{{ context.exports.payments.gateway.public_key }}"
+</script>
+
 {% assign gateway_name = 'stripe' %}
 {% export gateway_name, namespace: "payments"  %}
 
