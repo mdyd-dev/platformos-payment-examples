@@ -16,6 +16,7 @@
     "email": "{{ context.current_user.email }}",
     "external_id": "{{ context.current_user.id }}",
     "gateway_id": "{{ account.gateway_id }}",
+    "requested_capabilities": "legacy_payments",
     "id": "{{ account.id }}"
   }
 {%- endparse_json -%}
