@@ -19,7 +19,9 @@ export default class Stripe {
       signup: Selector('a').withText('Register'),
       login: Selector('a').withText('Log in'),
       devRegister: Selector('a').withText('Developer'),
-      clientRegister: Selector('a').withText('Client')
+      clientRegister: Selector('a').withText('Client'),
+      homePage: Selector('a').withText('PlatformOS Examples'),
+      account: Selector('a').withText('Saving Account [WIP]')
     }
     this.element = {
       address: Selector('.mt-3 li').withText('Address'),

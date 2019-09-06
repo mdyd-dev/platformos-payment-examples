@@ -1,14 +1,22 @@
-import {Selector} from 'testcafe';
+import {
+  Selector
+} from 'testcafe';
 import faker from 'faker';
 import Stripe from './page-object';
 import Login from '../../../tests/e2e/page-objects/login';
-import {ma_data} from '../../../tests/e2e/data/data.js';
-import {getBtAlertText} from '@platform-os/testcafe-helpers';
+import {
+  ma_data
+} from '../../../tests/e2e/data/data.js';
+import {
+  getBtAlertText
+} from '@platform-os/testcafe-helpers';
 
 const stripe = new Stripe();
 const login = new Login();
 
-const {dev} = {
+const {
+  dev
+} = {
   dev: {
     email: faker.internet.exampleEmail(),
     name: faker.name.firstName(),
@@ -24,10 +32,18 @@ test('Add new account', async t => {
 
   await t
     .click(stripe.link.devRegister)
-    .typeText(stripe.input.firstname, dev.name, {paste: true})
-    .typeText(stripe.input.email, dev.email, {paste: true})
-    .typeText(stripe.input.password, dev.password, {paste: true})
-    .typeText(stripe.input.phone, dev.phone, {paste: true})
+    .typeText(stripe.input.firstname, dev.name, {
+      paste: true
+    })
+    .typeText(stripe.input.email, dev.email, {
+      paste: true
+    })
+    .typeText(stripe.input.password, dev.password, {
+      paste: true
+    })
+    .typeText(stripe.input.phone, dev.phone, {
+      paste: true
+    })
     .click(stripe.button.createAccount);
 
   await login.login(dev.email, dev.password);
@@ -67,9 +83,6 @@ test('Add new account', async t => {
     .typeText(stripe.input.accountHolderName, ma_data.au.accountHolderName, {
       paste: true,
     })
-    // .typeText(stripe.input.firstName, ma_data.au.firstName, { paste: true })
-    // .typeText(stripe.input.lastName, ma_data.au.lastName, { paste: true })
-    // .typeText(stripe.input.dateOfBirth, ma_data.au.dateOfBirth, { paste: true })
     .click(stripe.button.submit);
 
   await t
@@ -86,6 +99,31 @@ test('Add new account', async t => {
     .ok();
 
   await t
+    .typeText(stripe.input.firstName, ma_data.au.firstName, {
+      paste: true
+    })
+    .typeText(stripe.input.lastName, ma_data.au.lastName, {
+      paste: true
+    })
+    .typeText(stripe.input.dateOfBirth, ma_data.au.dateOfBirth, {
+      paste: true
+    })
+    .click(stripe.button.submit);
+
+  await t
+    .expect(
+      await getBtAlertText({
+        type: 'success',
+        Selector,
+      }),
+    )
+    .ok()
+});
+
+test('Account verification', async t => {
+  await login.login(dev.email, dev.password);
+
+  await t
     .navigateTo('/account')
     .expect(stripe.element.state.innerText)
     .eql('verified')
@@ -100,6 +138,7 @@ test('Add new account', async t => {
     )
     .contains('You have successfully deleted an account');
 });
+
 //Skip tests
 test.skip('Update of necessary data', async t => {
   await t.click(stripe.button.addAccount);
@@ -158,7 +197,9 @@ test.skip('Update of necessary data', async t => {
     .expect(stripe.element.address.exists)
     .ok();
   await t
-    .typeText(stripe.input.address, ma_data.au.address, {paste: true})
+    .typeText(stripe.input.address, ma_data.au.address, {
+      paste: true
+    })
     .click(stripe.button.submit);
   await t
     .navigateTo('/account')
