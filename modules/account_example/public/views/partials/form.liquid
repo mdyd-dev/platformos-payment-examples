@@ -3,26 +3,37 @@
 
 {% graphql g = "modules/payments/get_accounts_by_external_id", external_id: context.current_user.id %}
 {% assign account = g.customizations.results.last %}
+  {%- parse_json 'config' -%}
+    {
+      "button": "Save",
+      "request_type": "create_account"
+    }
+  {%- endparse_json -%}
 
-{%- parse_json 'config' -%}
-  {
-    "button": "Save",
-    "request_type": "create_account"
-  }
-{%- endparse_json -%}
+  {%- parse_json 'data' -%}
+    {
+      "email": "{{ context.current_user.email }}",
+      "external_id": "{{ context.current_user.id }}",
+      "gateway_id": "{{ account.gateway_id }}",
+      "requested_capabilities": [ "card_payments", "transfers"],
+      "id": "{{ account.id }}",
+      "business_profile": {
+        "mcc": "4816",
+        "url": "www.platformos.com"
+      }
+    }
+  {%- endparse_json -%}
 
-{%- parse_json 'data' -%}
-  {
-    "email": "{{ context.current_user.email }}",
-    "external_id": "{{ context.current_user.id }}",
-    "gateway_id": "{{ account.gateway_id }}",
-    "requested_capabilities": "legacy_payments",
-    "id": "{{ account.id }}"
-  }
-{%- endparse_json -%}
+  {% log data, type: "Data" %}
 
-{%-
-  include_form 'modules/payments/gateway_request_form',
-  data: data,
-  config: config
-%}
+  {% if account.id == blank %}
+    {% assign request_form = 'modules/payments/gateway_request_form' %}
+  {% else %}
+    {% assign request_form = 'modules/payments/gateway_request_async_form' %}
+  {% endif %}
+
+  {%-
+    include_form request_form,
+    data: data,
+    config: config
+  %}
