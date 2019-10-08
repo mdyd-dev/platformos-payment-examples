@@ -10,7 +10,7 @@ export const ma_data = {
     accountHolderName: 'John Smith',
     firstName: 'John',
     lastName: 'Smith',
-    dateOfBirth: '31/01/1990',
+    dateOfBirth: '12/19/1990',
     address: '67 Woolnough Road',
     city: 'BLACKWOOD',
     state: 'South Australia',
