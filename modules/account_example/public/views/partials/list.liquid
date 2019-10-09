@@ -15,10 +15,9 @@
       </tr>
 
       {% for account in g.customizations.results  %}
-        {% assign p = account.properties %}
         <tr>
           <td>{{ account.id }}</td>
-          <td>{{ account.properties.state }}</td>
+          <td>{{ account.state }}</td>
           <td>
             <a class="btn btn-primary" href="/account/edit/{{ account.id }}">Edit</a>
           </td>
