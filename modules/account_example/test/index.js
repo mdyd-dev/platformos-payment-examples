@@ -27,9 +27,8 @@ const {
 
 fixture('Merchant Account').page(process.env.MP_URL);
 
-//Add new account with Bank Account as a method for receiving payouts
-test.only(
-  'Add new account with Bank Account as a method for receiving payouts',
+test(
+  'Add new account',
   async t => {
     await t.click(stripe.link.signup);
 
@@ -50,41 +49,18 @@ test.only(
       .click(stripe.button.createAccount);
 
     await login.login(dev.email, dev.password);
-
-    //await login.login('dev.email', 'password');
     await t.navigateTo('/account');
-    await t.click(stripe.button.addAccount);
-
     await t
+      .click(stripe.button.addAccount)
       .click(Selector('#gridCheck'))
       .expect(stripe.button.submit.exists)
       .ok()
       .click(stripe.button.submit);
 
-    // await t
-    //   .expect(Selector('.badge').withText('Payouts disabled').exists)
-    //   .ok()
-    //   .expect(Selector('.badge').withText('Payments disabled').exists)
-    //   .ok();
-    // await t
-    //   .click(Selector('#gridCheck'))
-    //   .expect(stripe.button.submit.exists)
-    //   .ok()
-    //   .click(stripe.button.submit);
-
-    // await t
-    //   .expect(
-    //     await getBtAlertText({
-    //       type: 'success',
-    //       Selector,
-    //     })
-    //   )
-    //   .contains('You have successfully created an account');
-
     await t
-      .click(stripe.checkbox.bankAccount)
       .expect(stripe.input.routingNumber.exists)
       .ok()
+    await t
       .typeText(stripe.input.routingNumber, ma_data.au.routingNumber, {
         paste: true,
       })
@@ -94,8 +70,6 @@ test.only(
       .typeText(stripe.input.accountHolderName, ma_data.au.accountHolderName, {
         paste: true,
       })
-
-    await t
       .typeText(stripe.input.firstName, ma_data.au.firstName, {
         paste: true,
       })
@@ -122,120 +96,25 @@ test.only(
       })
       .setFilesToUpload(stripe.input.uploadAvatarFront, ['../../../tests/e2e/uploads/hero.png'])
       .setFilesToUpload(stripe.input.uploadAvatarBack, ['../../../tests/e2e/uploads/hero.png'])
-
       .click(stripe.button.submit)
       .wait(10000)
-      .expect(stripe.link.refreshPage.exists)
-      .ok()
-      .click(stripe.link.refreshPage)
 
+    await t
+      .expect(stripe.input.emailMA.exists)
+      .ok();
+
+    await t
       .typeText(stripe.input.emailMA, dev.email, {
         paste: true
       })
       .click(stripe.button.submit)
-      .wait(4000)
-    await t
+      .wait(30000)
       .setFilesToUpload(stripe.input.uploadDocumentFront, ['../../../tests/e2e/uploads/hero.png'])
       .setFilesToUpload(stripe.input.uploadDocumentBack, ['../../../tests/e2e/uploads/hero.png'])
       .click(stripe.button.submit)
-      .wait(4000)
-
+      .wait(10000)
   }
 );
-//** END */
-
-test('Add new account', async t => {
-  await t.click(stripe.link.signup);
-
-  await t
-    .click(stripe.link.devRegister)
-    .typeText(stripe.input.firstname, dev.name, {
-      paste: true,
-    })
-    .typeText(stripe.input.email, dev.email, {
-      paste: true,
-    })
-    .typeText(stripe.input.password, dev.password, {
-      paste: true,
-    })
-    .typeText(stripe.input.phone, dev.phone, {
-      paste: true,
-    })
-    .click(stripe.button.createAccount);
-
-  await login.login(dev.email, dev.password);
-  await t.navigateTo('/account');
-
-  await t.click(stripe.button.addAccount);
-
-  await t
-    .expect(Selector('.badge').withText('Payouts disabled').exists)
-    .ok()
-    .expect(Selector('.badge').withText('Payments disabled').exists)
-    .ok();
-  await t
-    .click(Selector('#gridCheck'))
-    .expect(stripe.button.submit.exists)
-    .ok()
-    .click(stripe.button.submit);
-
-  await t
-    .expect(
-      await getBtAlertText({
-        type: 'success',
-        Selector,
-      })
-    )
-    .contains('You have successfully created an account');
-
-  await t
-    .expect(stripe.input.routingNumber.exists)
-    .ok()
-    .typeText(stripe.input.routingNumber, ma_data.au.routingNumber, {
-      paste: true,
-    })
-    .typeText(stripe.input.accountNumber, ma_data.au.accountNumber, {
-      paste: true,
-    })
-    .typeText(stripe.input.accountHolderName, ma_data.au.accountHolderName, {
-      paste: true,
-    })
-    .click(stripe.button.submit);
-
-  await t
-    .expect(
-      await getBtAlertText({
-        type: 'success',
-        Selector,
-      })
-    )
-    .ok()
-    .expect(Selector('.badge').withText('Payouts enabled').exists)
-    .ok()
-    .expect(Selector('.badge').withText('Payments enabled').exists)
-    .ok();
-
-  await t
-    .typeText(stripe.input.firstName, ma_data.au.firstName, {
-      paste: true,
-    })
-    .typeText(stripe.input.lastName, ma_data.au.lastName, {
-      paste: true,
-    })
-    .typeText(stripe.input.dateOfBirth, ma_data.au.dateOfBirth, {
-      paste: true,
-    })
-    .click(stripe.button.submit);
-
-  await t
-    .expect(
-      await getBtAlertText({
-        type: 'success',
-        Selector,
-      })
-    )
-    .ok();
-});
 
 test('Account verification', async t => {
   await login.login(dev.email, dev.password);

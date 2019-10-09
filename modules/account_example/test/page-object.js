@@ -5,7 +5,7 @@ import {
 export default class Stripe {
   constructor() {
     this.button = {
-      submit: Selector('button[data-stripe-account-submit]'),
+      submit: Selector('button[type="submit"]'),
       addAccount: Selector('a[data-add-account]'),
       deleteAccount: Selector('.delete-stripe'),
       createAccount: Selector('.btn.btn-primary'),
