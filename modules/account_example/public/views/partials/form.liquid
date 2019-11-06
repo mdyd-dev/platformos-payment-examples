@@ -24,14 +24,14 @@
   }
 {%- endparse_json -%}
 
-{% log data, type: "Data" %}
-
 {% if account.id == blank %}
   {% assign request_form = 'modules/payments/gateway_request_form' %}
 {% else %}
   {% assign request_form = 'modules/payments/gateway_request_async_form' %}
   {% assign data = data | add_hash_key: "id", account.id %}
 {% endif %}
+
+{% log data, type: "Data" %}
 
 {%-
   include_form request_form,
